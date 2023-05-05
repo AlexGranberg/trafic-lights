@@ -13,7 +13,7 @@
 
 void trafficLights(){
 
-BIT_SET(DDRB,YELLOW);
+BIT_SET(DDRB, YELLOW);
 BIT_SET(DDRB, RED);
 BIT_SET(DDRB, GREEN);
 	while(1){

@@ -3,29 +3,32 @@ LD=C:\avr\bin\avr-ld
 OBJCOPY="C:\avr\bin\avr-objcopy"
 OBJDUMP="C:\avr\bin\avr-objdump"
 AVRSIZE="C:\avr\bin\avr-size"
-
+OBJISP="C:\avr\bin\avrdude"
 MCU=atmega328p
-
 CFLAGS=-Wall -Wextra  -Wundef -pedantic \
 		-Os -std=gnu99 -DF_CPU=16000000UL -mmcu=${MCU}
 LDFLAGS=-mmcu=$(MCU)
 PORT=\\\\.\\COM3
-
 BIN=trafficlights
-
-# OUT=${BIN}.elf ${BIN}.hex ${BIN}.lss
 OUT=${BIN}.hex
-
 SOURCES = main.c
 
-OBJS = $(SOURCES:.c=.o)
+DEBUG?=1
 
-all: $(OUT)
+ifeq ($(DEBUG), 1)
+	OUTPUTDIR=bin/debug
+else
+	OUTPUTDIR=bin/release
+endif
+
+OBJS =  $(addprefix $(OUTPUTDIR)/,$(SOURCES:.c=.o))
+
+all: $(OUTPUTDIR) $(OUT) 
+
 $(OBJS): Makefile
 
-#-include $(OBJS:.o=,P)
-%.o:%.c
-	$(COMPILE.c) -MD -o $@ $<
+$(OUTPUTDIR)/%.o:%.c
+	$(CC) $(CFLAGS) -MD -o $@ -c $<
 
 %.lss: %.elf
 	$(OBJDUMP) -h -S -s $< > $@
@@ -34,11 +37,20 @@ $(OBJS): Makefile
 	$(CC) -Wl,-Map=$(@:.elf=.map) $(LDFLAGS) -o $@ $^
 	$(AVRSIZE) $@
 
+
+$(OBJS):$(SOURCES)
+
 %.hex: %.elf
 	$(OBJCOPY) -O ihex -R .fuse -R .lock -R .user_signatures -R .comment $< $@
 
 isp: ${BIN}.hex
-	C:\avr\bin\avrdude -F -V -c arduino -p ${MCU} -P ${PORT} -U flash:w:$<
+	$(OBJISP) -F -V -c arduino -p ${MCU} -P ${PORT} -U flash:w:$<
+
 
 clean:
-	rm -f $(OUT) $(OBJS) *.map *.P *.d
+	del "$(OUT)"  *.map *.P *.d
+
+$(OUTPUTDIR): 
+	@mkdir "$(OUTPUTDIR)"
+		   	
+.PHONY: clean dirs
