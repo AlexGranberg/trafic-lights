@@ -11,7 +11,7 @@ CFLAGS=-Wall -Wextra  -Wundef -pedantic \
 LDFLAGS=-mmcu=$(MCU)
 PORT=\\\\.\\COM3
 
-BIN=blink
+BIN=trafficlights
 
 # OUT=${BIN}.elf ${BIN}.hex ${BIN}.lss
 OUT=${BIN}.hex
