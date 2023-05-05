@@ -9,9 +9,9 @@ CFLAGS=-Wall -Wextra  -Wundef -pedantic \
 		-Os -std=gnu99 -DF_CPU=16000000UL -mmcu=${MCU}
 LDFLAGS=-mmcu=$(MCU)
 PORT=\\\\.\\COM3
-BIN=trafficlights
+BIN=trafficlights_nodelay
 OUT=${BIN}.hex
-SOURCES = main.c
+SOURCES = main.c millis.c
 
 DEBUG?=1
 
