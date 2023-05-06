@@ -20,7 +20,7 @@ void trafficLights() {
 
     switch (state) {
         case GREEN:
-            if (elapsed_millis >= 2000) {
+            if (elapsed_millis >= 5000) {
                 BIT_CLEAR(PORTB, YELLOW);
                 BIT_CLEAR(PORTB, RED);
                 BIT_SET(PORTB, GREEN);
@@ -29,7 +29,7 @@ void trafficLights() {
             }
             break;
         case YELLOW:
-            if (elapsed_millis >= 8000) {
+            if (elapsed_millis >= 15000) {
                 if (BIT_CHECK(PORTB, GREEN)) {
                     BIT_CLEAR(PORTB, GREEN);
 					BIT_CLEAR(PORTB, RED);
@@ -46,7 +46,7 @@ void trafficLights() {
             }
             break;
         case RED:
-            if (elapsed_millis >= 2000) {
+            if (elapsed_millis >= 5000) {
                 BIT_CLEAR(PORTB, GREEN);
                 BIT_CLEAR(PORTB, YELLOW);
                 BIT_SET(PORTB, RED);
