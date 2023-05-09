@@ -58,7 +58,7 @@ void trafficLights() {
 }
 
 int main(void) {
-    init_millis(16000000UL);
+    millis_init();
     sei();
 
     BIT_SET(DDRB, YELLOW);
