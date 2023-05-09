@@ -14,8 +14,8 @@
 
 void trafficLights() {
     static unsigned long prev_millis = 0;
-    static int state = GREEN;
-    unsigned long current_millis = millis();
+    static int state = YELLOW;
+    unsigned long current_millis = millis_get();
     unsigned long elapsed_millis = current_millis - prev_millis;
 
     switch (state) {
@@ -69,7 +69,8 @@ int main(void) {
     BIT_CLEAR(PORTB, RED);
     BIT_SET(PORTB, GREEN);
 
-    while (1) {
+
+    while(1) {
         trafficLights();
     }
 
